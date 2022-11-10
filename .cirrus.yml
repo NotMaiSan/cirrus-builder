@@ -3,7 +3,7 @@ env:
     rcloneconfig: "ENCRYPTED[!3fcfaacb0ece8f18ef8a4db77414d486b6634380ea88e7fc1988a6ebfe7d7504b32e24ffdfaaeb586329f1cd9b5c6585!]"
     tokentl: "ENCRYPTED[!7ed7ff711b889fd954c71e98a2d4bcbc50aa099688a626a83da794e7aa4afd58557752b1b614dd3631c31f6b655a346c!]"
     idtl: "ENCRYPTED[!d89cd5c6cdc21a2eba483db66c48545c510fcfe378fd3a9f6033f59695321d03a21bb863eb48ad36d2543201324343f5!]"
-    lunch : lunch nad_ysl-userdebug
+    lunch : lunch nad_ysl-eng
     make: make nad
  
 task:
