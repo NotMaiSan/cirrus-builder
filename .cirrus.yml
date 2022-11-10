@@ -55,6 +55,7 @@ task:
       - export BUILD_HOSTNAME="IDN-Labs"
       - export BUILD_WITH_COLORS=1
       - sed -i 's|-u ||g' ~/rom/vendor/nusantara/config/branding.mk
+      - sed -i 's|DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += vendor/nusantara/config/device_framework_matrix.xml||g' ~/rom/vendor/nusantara/config/common.mk
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
 #      - ./collect.sh
