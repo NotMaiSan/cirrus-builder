@@ -4,7 +4,7 @@ env:
     tokentl: "ENCRYPTED[!7ed7ff711b889fd954c71e98a2d4bcbc50aa099688a626a83da794e7aa4afd58557752b1b614dd3631c31f6b655a346c!]"
     idtl: "ENCRYPTED[!d89cd5c6cdc21a2eba483db66c48545c510fcfe378fd3a9f6033f59695321d03a21bb863eb48ad36d2543201324343f5!]"
     lunch : lunch nad_ysl-eng
-    make: make nad
+    make: make kernel
  
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -55,7 +55,6 @@ task:
       - export BUILD_HOSTNAME="IDN-Labs"
       - export BUILD_WITH_COLORS=1
       - sed -i 's|-u ||g' ~/rom/vendor/nusantara/config/branding.mk
-      - sed -i 's|DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += vendor/nusantara/config/device_framework_matrix.xml||g' ~/rom/vendor/nusantara/config/common.mk
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
 #      - ./collect.sh
@@ -64,11 +63,14 @@ task:
 
   Upload_script:
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading Build $(cd ~/rom/out/target/product/ysl/ && ls Nusantara*.zip)"
-      - rclone copy ~/rom/out/target/product/ysl/Nusantara*.zip venyx:ysl -P
+      - rclone copy ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/arch/arm64/boot/Image.gz-dtb venyx:ysl -P
+      - cat ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/include/generated/compile.h
+      - cat ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/include/generated/uts*.h
+#      - rclone copy ~/rom/out/target/product/ysl/Nusantara*.zip venyx:ysl -P
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/home/out/target/product/ysl/ && ls Nusantara*.zip) Uploaded Successfully!"
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
-      - ./ziping.sh
-      - cd ~/
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-      - rclone copy ccache.tar.gz venyx:nad-12 -P
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
+#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
+#      - ./ziping.sh
+#      - cd ~/
+#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
+#      - rclone copy ccache.tar.gz venyx:nad-12 -P
+#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
