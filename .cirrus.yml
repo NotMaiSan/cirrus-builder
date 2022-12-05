@@ -3,8 +3,8 @@ env:
     rcloneconfig: "ENCRYPTED[!3fcfaacb0ece8f18ef8a4db77414d486b6634380ea88e7fc1988a6ebfe7d7504b32e24ffdfaaeb586329f1cd9b5c6585!]"
     tokentl: "ENCRYPTED[!7ed7ff711b889fd954c71e98a2d4bcbc50aa099688a626a83da794e7aa4afd58557752b1b614dd3631c31f6b655a346c!]"
     idtl: "ENCRYPTED[!d89cd5c6cdc21a2eba483db66c48545c510fcfe378fd3a9f6033f59695321d03a21bb863eb48ad36d2543201324343f5!]"
-    lunch : lunch nad_ysl-eng
-    make: make kernel
+    lunch : lunch havoc_juice-user
+    make: make bacon
  
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -23,7 +23,7 @@ task:
        - echo "$credentials" > ~/.git-credentials
        - git config --global credential.helper store --file=~/.git-credentials
        - mkdir -p ~/ccache
-       - rclone copy venyx:nad-12/ccache.tar.gz ~/ -P
+       - rclone copy venyx:havoc-11/ccache.tar.gz ~/ -P
        - cd ~/
        - time tar xf ccache.tar.gz
        - cd ~/
@@ -45,32 +45,31 @@ task:
       - cd ~/rom
       - rm -rf * .repo
       - git clone https://gerrit.googlesource.com/git-repo .repo/repo
-      - repo init -q --no-repo-verify --depth=1 -u https://github.com/IDN-Labs/android_manifest -b 12.1 -g default,-mips,-darwin,-notdefault
-      - git clone https://github.com/IDN-Labs/local_manifest --depth 1 -b nad-12.1 .repo/local_manifests
+      - repo init -q --no-repo-verify --depth=1 -u https://github.com/HavocOS-Revived/android_manifest -b eleven -g default,-mips,-darwin,-notdefault
       - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
+      - git clone --depth 1 https://github.com/lynnnnzx/android_device_xiaomi_juice-r -b havoc device/xiaomi/juice
+      - git clone --depth 1 https://github.com/lynnnnzx/vendor_xiaomi_juice vendor/xiaomi/juice
+      - git clone --depth 1 https://github.com/IDN-Labs/kernel_juice kernel/xiaomi/juice
+      - git clone --depth 1 https://github.com/lynnnnzx/platform_packages_inputmethods_Gboard packages/inputmethods/Gboard
+      - git clone --depth 1 https://gitlab.com/OhMyVenyx/clang-r450784e prebuilts/clang/host/linux-x86/clang-mistyx
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
       - export BUILD_USERNAME="venyx"
       - export BUILD_HOSTNAME="IDN-Labs"
-      - export BUILD_WITH_COLORS=1
-      - sed -i 's|-u ||g' ~/rom/vendor/nusantara/config/branding.mk
+      - export HAVOC_BUILD_TYPE="Private"
+      - sed -i 's|-u ||g' ~/rom/vendor/havoc/config/version.mk
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-#      - ./collect.sh
-      - ./final.sh
+      - ./collect.sh
+#      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Completed!"
 
   Upload_script:
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading Build $(cd ~/rom/out/target/product/ysl/ && ls Nusantara*.zip)"
-      - rclone copy ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/arch/arm64/boot/Image.gz-dtb venyx:ysl -P
-      - cat ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/include/generated/compile.h
-      - cat ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/include/generated/uts*.h
-#      - rclone copy ~/rom/out/target/product/ysl/Nusantara*.zip venyx:ysl -P
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/home/out/target/product/ysl/ && ls Nusantara*.zip) Uploaded Successfully!"
-#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
-#      - ./ziping.sh
-#      - cd ~/
-#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-#      - rclone copy ccache.tar.gz venyx:nad-12 -P
-#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
+      - ./upload.sh
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
+      - ./ziping.sh
+      - cd ~/
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
+      - rclone copy ccache.tar.gz venyx:havoc-11 -P
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
