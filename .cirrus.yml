@@ -45,7 +45,7 @@ task:
       - cd ~/rom
       - rm -rf * .repo
       - git clone https://gerrit.googlesource.com/git-repo .repo/repo
-      - repo init -q --no-repo-verify --depth=1 -u https://github.com/HavocOS-Revived/android_manifest -b eleven -g default,-mips,-darwin,-notdefault
+      - repo init -q --no-repo-verify --depth=1 -u https://github.com/Havoc-OS/android_manifest -b eleven -g default,-mips,-darwin,-notdefault
       - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
       - git clone --depth 1 https://github.com/lynnnnzx/android_device_xiaomi_juice-r -b havoc device/xiaomi/juice
       - git clone --depth 1 https://github.com/lynnnnzx/vendor_xiaomi_juice vendor/xiaomi/juice
